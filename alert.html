@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cancelar Ingreso</title>
+	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.2.min.css">
+	<script src="jqm/js/jquery.js"></script>
+	<script src="jqm/_assets/js/index.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.2.min.js"></script>
+
+</head>
+<body>
+
+
+<div data-role="dialog" data-close-btn="none" data-transition="slidedown">
+
+		<div data-role="header" data-theme="1">
+			<h1><div id="titulo"></div></h1>
+		</div>
+
+		<div data-role="content">
+			<div id="contenido"></div>
+			<div id="boton"></div>
+		</div>
+</div>
+<script>
+
+var alert_titulo=localStorage.alert_titulo;
+var alert_contenido=localStorage.alert_contenido;
+var alert_btn_nombre=localStorage.alert_btn_nombre;
+var alert_href=localStorage.alert_href;
+
+$('#titulo').html(alert_titulo);
+$('#contenido').html(alert_contenido);
+$("#boton").append('<a href="'+alert_href+'" target="_top" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="check">'+alert_btn_nombre+'</a>');
+$("#boton").trigger("create");
+</script>
+</body>
+</html>

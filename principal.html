@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Grid Listview - jQuery Mobile Demos</title>
+	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.2.min.css">
+	<link rel="stylesheet" href="jqm/_assets/css/jqm-demos.css">
+	<link rel="stylesheet" href="css/listview-grid.css">
+	<style type="text/css">
+		.my-page .ui-listview li .ui-btn .ui-li-aside {
+		    color: #a5a5a5 !important;
+		}
+		.my-page .ui-listview li .ui-btn p {
+		    color: #555555 !important;
+		}
+	</style>
+	
+	<link rel="stylesheet"  href="css/crear.css">
+	
+	<script src="js/valida.js"></script> 
+	
+	<script src="jqm/js/jquery.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.2.min.js"></script>
+	
+	<script type="text/javascript" src="cordova.js"></script>
+
+</head>
+<body>
+<div data-role="page" data-theme="a" id="demo-page" class="my-page">
+
+<!--	<div data-role="header">
+		<h1>Acceso</h1>
+		<a href="index.html" target="_self" data-shadow="false" data-iconshadow="false" data-icon="arrow-l" data-iconpos="notext" data-rel="back" data-ajax="false">Back</a>
+	</div> /header -->
+	
+	<div data-role="header" style="overflow:hidden;">
+		<h1>Menú</h1>
+	</div><!-- /header -->
+	<div class="colorgraph"></div>
+	<div data-role="content">
+	
+        <ul data-role="listview" data-inset="true" >
+        	<li><a href="asignacion.html" target="_top">
+            	<img src="img/menu_asignacion.png" class="ui-li-thumb">
+            	<h2>Asignaci&oacute;n</h2>
+                <p>Actividades asignadas</p>
+                <p class="ui-li-aside">Asignaci&oacute;n</p>
+            </a></li>
+        	<li><a href="categorias.html" target="_top">
+            	<img src="img/menu_individual.png" class="ui-li-thumb">
+            	<h2>Ingreso Libre</h2>
+                <p>Ingreso de la informaci&oacute;n</p>
+                <p class="ui-li-aside">Ingreso Libre</p>
+            </a></li>
+        	<li><a href="descargar.html" target="_top">
+            	<img src="img/menu_descargar.png" class="ui-li-thumb">
+            	<h2>Sincronizar</h2>
+                <p>Recibe informaci&oacute;n del servidor</p>
+                <p class="ui-li-aside">Sincronizar</p>
+            </a></li>
+        	<li><a href="cargar.html" target="_top">
+            	<img src="img/menu_cargar.png" class="ui-li-thumb">
+            	<h2>Enviar</h2>
+                <p>Env&iacute;a informaci&oacute;n al servidor</p>
+                <p class="ui-li-aside">Enviar</p>
+            </a></li>
+        	<li><a href="salir.html" target="_top">
+            	<img src="img/menu_salir.png" class="ui-li-thumb">
+            	<h2>Cerrar Sesión</h2>
+                <p>Cierra sesión permitiendo ingresar con otro Usuario</p>
+                <p class="ui-li-aside">Cerrar</p>
+            </a></li>
+        </ul>
+                
+	
+
+                
+    </div><!-- /content -->
+    <div class="colorgraph"></div>
+    <div data-role="footer" data-theme="none">
+        <h3>Sistema SAGA - GeoMóvil</h3>
+    </div><!-- /footer -->
+    
+	<h3><div id="cod_dm"> </div></h3>
+
+</div><!-- /page -->
+
+	<!-- End Page Content -->
+	<script type="text/javascript" src="js/index_device_info.js"></script>
+	<script type="text/javascript">app.initialize();</script>
+	<script src="js/geolocation.js"></script>
+</body>
+</html>

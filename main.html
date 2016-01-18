@@ -1,0 +1,59 @@
+<!doctype html>
+<head>
+
+	<!-- Basics -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Inicio GeoMóvil!</title>
+
+	<!-- CSS	-->
+	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.2.min.css">
+	<style type="text/css">
+		body, input, select, textarea, button, .ui-btn {
+		    line-height: 0.8 !important; 
+		}
+	</style>
+        
+	<link rel="stylesheet"  href="css/crear.css">
+
+	<!-- JAVASCRIPT		-->
+	<script src="jqm/js/jquery.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+		
+	<script type="text/javascript" src="js/conexion_servidor.js"></script>
+	
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">app.initialize();</script>
+    	 
+</head>
+	<!-- Main HTML -->
+<body>
+	<!-- Begin Page Content -->
+<div id="container" data-role="page" data-theme="a">
+	
+	<header>
+		<p align="center"><img src="img/logob.png" width="200px" align="center"></p>
+		<h2 align="center" class="label_titulo"><br><br><strong>Sistema SAGA - GeoMóvil</strong> </h2><br>
+		
+		<h3><div id ="equivocado" align="center" class="notificacion"></div></h3>
+	</header>
+	<label for="login">Usuario:</label><input type="text" name="login" id="login" placeholder="Usuario" required>
+	<label for="password">Clave:</label><p><input type="password" name="password" id="password" placeholder="Clave" required>
+	
+	<div id="lower">
+		<!-- <input type="checkbox" id ="conectado"><label class="check" for="checkbox">Permanecer conectado</label> -->
+		<input type="submit" id="submit" value="Ingresar">
+	</div><br>
+	<div class="colorgraph"></div>
+	<p align="center">Secretaria TIC - 2014<img src="img/calidad_vida.png"  width="80px" align="right"></p>
+	
+</div>
+	<!-- End Page Content	--> 
+	<script type="text/javascript" src="js/bdLocal.js"></script>
+	<script type="text/javascript" src="js/logueo.js"></script>
+
+</body>
+
+</html>

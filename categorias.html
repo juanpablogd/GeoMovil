@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Formularios Disponibles</title>
+	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.2.min.css">
+	<link rel="stylesheet" href="jqm/_assets/css/jqm-demos.css">
+	<link rel="stylesheet"  href="css/crear.css">
+	<script src="js/valida.js"></script>
+	
+	<script src="jqm/js/jquery.js"></script>
+	<script src="jqm/_assets/js/index.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.2.min.js"></script>
+	
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">app.initialize();</script>
+</head>
+<body>
+<div data-role="page" data-theme="a" id="demo-page" class="my-page">
+	
+	<div data-role="header" style="overflow:hidden;">
+		<h1>Formularios Disponibles</h1>
+	    <a href="principal.html" target="_top" data-icon="arrow-l" class="ui-btn-left">Volver</a>
+	</div><!-- /header -->
+	<div class="colorgraph"></div>
+	<div data-role="content">
+		<br><ul data-role="listview" id="items"></ul>
+    </div><!-- /content -->
+    <div class="colorgraph"></div>
+    <br><div data-role="footer" data-theme="none">
+        <h3>Sistema SAGA - GeoMóvil</h3>
+    </div><!-- /footer -->
+
+</div><!-- /page -->
+
+	<script src="js/cargar_formulario.js"></script>
+	<script src="js/geolocation.js"></script>
+    
+</body>
+</html>

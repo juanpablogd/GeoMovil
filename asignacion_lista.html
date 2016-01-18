@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Descargar Ordenes de Trabajo</title>
+	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.3.2.min.css">
+	<link rel="stylesheet" href="jqm/_assets/css/jqm-demos.css">
+	<link rel="shortcut icon" href="favicon.ico">
+    <!------------	CSS PARA LOS BOTONES CON ICONOS DIVERSOS	-------------->
+    <link rel="stylesheet" href="mapa/jqm-icon-pack-fa.css">
+	<script src="jqm/js/jquery.js"></script>
+	<script src="jqm/_assets/js/index.js"></script>
+	<script src="jqm/js/jquery.mobile-1.3.2.min.js"></script>
+
+</head>
+<body>
+<div data-role="page" data-theme="a" id="demo-page" class="my-page">
+	
+	<div data-role="header">
+  	    <a href="asignacion.html" target="_top" data-icon="folder-open">Asignaciones</a>
+	    <h1>Lista</h1>
+	    <a href="mapa/mobile-jq.html" target="_top" data-icon="map-marker">Mapa</a>		
+	</div><!-- /header -->
+	
+	<div data-role="content">
+		
+		<ul data-role="listview" id="items" data-filter="true" data-inset="true" data-filter-placeholder="Buscar..."></ul>
+    </div><!-- /content -->
+</div><!-- /page -->
+	<script src="js/cargar_asignacion_lista.js"></script>
+</body>
+</html>
