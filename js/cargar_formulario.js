@@ -1,10 +1,11 @@
 /**
- * @author DGPJ 20130902
+ * @author SKAPHE 20130902
  */
 var db = window.openDatabase("bdsigplus", "1.0", "Proyecto Sig Plus", 33554432);
 var id;
 var vertical;
 var esquema;
+var NoVerticales;
 
 //FUNCION ALERTA
 function alerta(titulo,contenido,btn_nombre,link){
@@ -34,6 +35,7 @@ function ConsultaItems(tx) {
 // RESPUESTA DE LA CONSULTA LAS VERTICALES EN EL MOVIL
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	
+	NoVerticales= results.rows.length;
 	for (i = 0; i < len; i++){
 		  console.log('select distinct id,categoria,"'+results.rows.item(i).esquema+'" as esquema,"'+results.rows.item(i).vertical+'" as vertical,foto_calidad,foto_tamano,id_item_foto,geolocaliza_obligatorio,foto_obligatorio,video_obligatorio,geometria_obligatorio from '+results.rows.item(i).esquema+'p_categorias order by categoria');
 		tx.executeSql('select distinct id,categoria,"'+results.rows.item(i).esquema+'" as esquema,"'+results.rows.item(i).vertical+'" as vertical,foto_calidad,foto_tamano,id_item_foto,geolocaliza_obligatorio,foto_obligatorio,video_obligatorio,geometria_obligatorio from '+results.rows.item(i).esquema+'p_categorias order by categoria', [], ConsultaItemsCargaAsignResp,errorCB);
@@ -55,7 +57,8 @@ var lon = resultsV.rows.length;								console.log("Total de Formularios: "+lon)
 		var geometria_obligatorio = resultsV.rows.item(i).geometria_obligatorio;
 		var strID = id_categoria+'@'+resultsV.rows.item(i).esquema+'@'+foto_calidad+'@'+foto_tamano+'@'+id_item_foto+'@'+geolocaliza_obligatorio+'@'+foto_obligatorio+'@'+video_obligatorio+'@'+geometria_obligatorio;
 		$("#items").append('<li><a href="#" id ="'+strID+'">'+resultsV.rows.item(i).vertical+'-'+categoria+'</a></li>');
-		if(lon==1) CargaFormulario(strID);
+		//alert(NoVerticales);
+		if(NoVerticales==1 && lon==1) CargaFormulario(strID);
    	}
    	$("#items").listview('refresh');
 	//NO PUEDE IR ANTES  DEL REFRESH - Selecciona los elementos luego de ser cargados en tiempo de ejecucion    	

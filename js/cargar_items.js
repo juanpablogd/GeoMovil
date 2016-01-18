@@ -1,6 +1,7 @@
 /**
- * @author DGPJ 20130902
- * @Modifi DGPJ 20130917
+ * @author SKAPHE 20130902
+ * @Modifi SKAPHE 20130917
+ * @Modifi SKAPHE 20160118
  */
 /*VARIABLES GLOBALES*/
 var db = window.openDatabase("bdsigplus", "1.0", "Proyecto Sig Plus", 33554432);
@@ -24,6 +25,55 @@ function alerta(titulo,contenido,btn_nombre,link){
 	localStorage.alert_href = link;
 	window.location = "alert.html";
 }
+
+function SeleccionItemsOcultar(tx) {	//console.log('select iadd.id_rta,iadd.id_item from '+esquema+'p_items_adicional iadd inner join '+esquema+'p_rtas_seleccion rtas on iadd.id_rta = rtas.id inner join '+esquema+'p_items_formulario item on item.id_item = rtas.id_item where id_categoria = "'+localStorage.id_categoria+'" and item.id_item = "'+localStorage.tmp_id_item+'" order by iadd.id_item desc');
+	tx.executeSql('select iadd.id_rta,iadd.id_item from '+esquema+'p_items_adicional iadd inner join '+esquema+'p_rtas_seleccion rtas on iadd.id_rta = rtas.id inner join '+esquema+'p_items_formulario item on item.id_item = rtas.id_item where id_categoria = "'+localStorage.id_categoria+'" and item.id_item = "'+localStorage.tmp_id_item+'" order by iadd.id_item desc', [], SeleccionItemsOcultarResult,errorCB);
+}
+function SeleccionItemsOcultarResult(tx, results) {
+	var len = results.rows.length;	//alert(len);
+	for (i = 0; i < len; i++){
+		var id_item = results.rows.item(i).id_item;
+		var id_rta = results.rows.item(i).id_rta; console.log(localStorage.id_rta + " Loop: " + id_rta);
+		if(localStorage.tmp_id_rta == id_rta){
+			console.log("Mostrar elemento: "+id_item);
+			$("#l"+id_item+"").show();
+			$("#"+id_item+"").show();
+			$("#f"+id_item+"").show();
+			$("#"+id_item+"").prop('required',true);
+			$("#"+id_item+"").attr('visible','true');
+			$("#f"+id_item+"").addClass('required');
+		}else{
+			console.log("Ocultar elemento: "+id_item);
+			$("#"+id_item+"").removeAttr('required');
+			$("#"+id_item+"").attr('visible','false');
+			$("#f"+id_item+"").removeClass('required');
+			$("#l"+id_item+"").hide();
+			$("#"+id_item+"").hide();
+			$("#f"+id_item+"").hide();			
+		}
+			
+
+   	}
+   
+}
+
+function getval(sel) {
+	console.log("Id: "+sel.id);
+	var res = sel.value.split("@");
+	// VALOR FINAL A GUARDAR
+	var tmp_id_rta = res[1];
+	// VALOR FINAL A GUARDAR
+	var tmp_id_item = res[2];
+	//Variable Global como localStorage
+	localStorage.tmp_id_item = sel.id;
+	localStorage.tmp_id_rta = tmp_id_rta;
+	console.log("ORIGEN Id rta: " + localStorage.tmp_id_item + " - " + localStorage.tmp_id_rta);
+	
+	// CARGAR ITEMS DE LA BASE DE DATOS
+	db.transaction(SeleccionItemsOcultar);
+}
+    
+/****************************************************************************************************************************************************************/
 /****************************************************************************************************************************************************************/
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
@@ -49,41 +99,77 @@ function validar_campos(){
 		 
 	return valido;
 }
+/****************************************************************************************************************************************************************/
+/**OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO*****/ 
+function OcultarItems(tx) { console.log('SELECT iadd.id_item FROM '+esquema+'p_items_formulario itemfor inner join '+esquema+'p_items_adicional iadd on itemfor.id_item = iadd.id_item where id_categoria = "'+id_categoria+'" order by iadd.id_item desc');
+	
+	tx.executeSql('SELECT iadd.id_item FROM '+esquema+'p_items_formulario itemfor inner join '+esquema+'p_items_adicional iadd on itemfor.id_item = iadd.id_item where id_categoria = "'+id_categoria+'" order by iadd.id_item desc', [], OcultartemsResult,errorCB);
+}
+function OcultartemsResult(tx, results) {
+	var len = results.rows.length;	//alert(len);
+	for (i = 0; i < len; i++){
+		var id_item = results.rows.item(i).id_item;
+		console.log("Ocultar: " + id_item);
+		$("#l"+id_item+"").hide();
+		$("#"+id_item+"").removeAttr('required');
+		$("#"+id_item+"").attr('visible','false');
+		$("#f"+id_item+"").removeClass("required");
+		$("#f"+id_item+"").hide();
+		$("#"+id_item+"").hide();
+   	}
+   	$("#items").trigger("create");
+
+}
+/***FIN OCULTAR ITEMS*************************************************************************************************************************************************************/
 
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {
-	  console.log('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where id_categoria="'+id_categoria+'" order by cast(orden as integer)');	
-	tx.executeSql('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where id_categoria="'+id_categoria+'" order by cast(orden as integer)', [], ConsultaItemsCarga,errorCB);
+	  console.log('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor,rt.id id_add from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where id_categoria="'+id_categoria+'" order by cast(orden as integer)');	
+	tx.executeSql('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor,rt.id id_add from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where id_categoria="'+id_categoria+'" order by cast(orden as integer)', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//alert(len);
 	for (i = 0; i < len; i++){
 		var rta = results.rows.item(i).tipo_rta;
-		var id_item = results.rows.item(i).id_item;
+		var id_item = results.rows.item(i).id_item;	//console.log(localStorage.id_item_foto); console.log(id_item);
 		if(localStorage.id_item_foto != id_item){ //SI NO ES LA PREGUNTA DE LA FOTO
 			var descripcion_item = results.rows.item(i).descripcion_item;
 			var obligatorio = "";		console.log(results.rows.item(i).obligatorio);
 			if(results.rows.item(i).obligatorio == "S") {obligatorio = "required";}
 			
-			if (rta == "TEXTO"){
-				$("#items").append('<div data-role="fieldcontain"><label for="'+id_item+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="'+id_item+'" value="" data-mini="true" maxlength="255" '+obligatorio+'/></div>');	/* $('#'+id_item).textinput(); */
-			}else if (rta == "PARRAFO" ) {
-				$("#items").append('<div data-role="fieldcontain"><label for="'+id_item+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */				
-			}else if (rta == "CANTIDAD") {
-				$("#items").append('<div data-role="fieldcontain"><label for="'+id_item+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="'+id_item+'" value="" data-mini="true" '+obligatorio+' onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;"/></div>');	/* $('#'+id_item).textinput(); */
-			}else if (rta == "FECHA") {
-				$("#items").append('<div data-role="fieldcontain"><label for="'+id_item+'">'+descripcion_item+'</label><input type="date" name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+'/></div>');
-			}else if (rta == "BOOLEANO") {
-				$("#items").append('<div data-role="fieldcontain"><label for="'+id_item+'">'+descripcion_item+'</label><select name="'+id_item+'" id="'+id_item+'" data-role="slider" data-mini="true" '+obligatorio+'><option value="NO"selected >NO</option><option value="SI" >SI</option></select></div>');
+			if (rta == "TEXTO" && id_item_last != id_item){
+				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" maxlength="255" '+obligatorio+' visible="true"/></div>');
+			}else if (rta == "PARRAFO" && id_item_last != id_item) {
+				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */				
+			}else if (rta == "CANTIDAD" && id_item_last != id_item) {
+				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" '+obligatorio+' onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;" visible="true"/></div>');	/* $('#'+id_item).textinput(); */
+			}else if (rta == "FECHA" && id_item_last != id_item) {
+				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label for="'+id_item+'" name="l'+id_item+'" id="l'+id_item+'" class="control-label" >'+descripcion_item+'</label><input type="date" tipo="fecha" name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' onkeypress="if (event.keyCode< 47 || event.keyCode > 57) event.returnValue = false;" visible="true"/></div>');
 			}else if (rta == "SELECCION") {
 				if(id_item_last != id_item){
-					$("#items").append('<div data-role="fieldcontain"><label for="'+id_item+'" class="select">'+descripcion_item+'</label><select name="'+id_item+'" id="'+id_item+'" data-mini="true" '+obligatorio+'><option value="">---Seleccione---</option></select></div>');	
+					$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'">'+
+											'<label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'" class="select">'+descripcion_item+'</label>'+
+												'<select name="'+id_item+'" id="'+id_item+'" data-mini="true" '+obligatorio+' onchange="getval(this);" visible="true">'+
+													'<option value="">---Seleccione---</option>'+
+												'</select>'+
+										'</div>');	
 				}
-				if(results.rows.item(i).valor != null) { $('#'+id_item).append('<option value="'+results.rows.item(i).valor+'">'+results.rows.item(i).descripcion+'</option>'); }	
+				if(results.rows.item(i).valor != null) { $('#'+id_item).append('<option value="'+results.rows.item(i).valor+'@'+results.rows.item(i).id_add+'">'+results.rows.item(i).descripcion+'</option>'); }	
+			}else if (rta == "LISTA") {
+				if(id_item_last != id_item){
+					$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'" class="form-group '+obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="select control-label"" >'+descripcion_item+'</label></div>');
+				}
+				if(results.rows.item(i).valor != null) { $('#f'+id_item).append('<input type="checkbox" name="'+id_item+'" id="'+id_item+'" value="'+results.rows.item(i).valor+'" visible="true"> '+results.rows.item(i).descripcion+'<br>'); }	
 			}
-			id_item_last = id_item;		//console.log(id_item);
-		}
+			
+			if((i+1)==len){		//DESPUES DE CARGAR TODOS LOS REGISTROS
+				// OCULTAR ITEMS
+				db.transaction(OcultarItems);
+			}
+	
+				id_item_last = id_item;		//console.log(id_item);
+			}
    	}
    	/*Adiciona al formulario Botón de cancelar y Guardar*/
    	$("#items").append('<a id="Salir" href="formulario_dialog.html" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="delete">Cancelar</a>');
@@ -109,7 +195,7 @@ function ConsultaItemsCarga(tx, results) {
 /*********************************************************************************************************************************************************************/
 /**CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITITEM FOTOEMS****CARGAR ITEM FOTO**/ 
 function ConsultaItem_foto(tx) {
-	  console.log('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where rt.id_item="'+localStorage.id_item_foto+'" order by orden');	
+		console.log('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where rt.id_item="'+localStorage.id_item_foto+'" order by orden');	
 	tx.executeSql('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where rt.id_item="'+localStorage.id_item_foto+'" order by orden', [], ConsultaItemCarga_foto,errorCB);
 }
 function ConsultaItemCarga_foto(tx, results) {
@@ -172,8 +258,30 @@ function GuardarItemsExe(tx) {
 			localStorage.id_unico = id_unico;
 			tx.executeSql('INSERT INTO '+esquema+'t_asignacion_lugar (id_encuestador,id_categoria,estado,id_usuario_asign,fecha_asignacion,fecha_ejecucion,latitud_envio,longitud_envio,exactitud,id_envio,tipo_ingreso,feature) values ("'+id_usr+'","'+id_categoria+'","C","'+id_usr+'","'+fecha_captura+'","'+fecha_captura+'","'+myLatitud+'","'+myLongitud+'","'+myPrecision+'","'+id_unico+'","N","'+localStorage.geometria+'")');
 		}
-		
-		//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
+	
+			//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
+			 $(':input').each(function () {
+					var $this = $(this),id_item = $this.attr('name');
+					if(id_item!==undefined && id_item!="" && id_item!="id_geometria" && id_item != localStorage.id_item_foto){
+						//LLAMA VALOR
+						var cant_val = $(this).val();
+						//SI ES TIPO SELECT QUITA EL ID DE OCULTAR O MOSTRAR
+						var res = cant_val.split("@");
+						// VALOR FINAL A GUARDAR
+						var cant_val = res[0].trim(); 					console.log (id_item + " : " + cant_val + "Visible: " + $(this).attr('visible') + " Checked: " + $(this).attr('type'));
+						if( ( $(this).attr('type') != 'checkbox' && $(this).attr('visible') == 'true' && cant_val != "") || ($(this).attr('type') == 'checkbox' && $(this).is(':checked')) ){
+							if(asignado=="t"){	//si es asignado
+								tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_asignacion,id_item,respuesta,id_envio) values ("'+id_asignacion+'","'+id_item+'","'+cant_val+'","'+id_unico+'")');
+							}else				//si es Nuevo registro no asignado
+							{
+								tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
+								console.log('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
+							}
+						}
+		           }
+			 });
+
+/*		//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
 		 $(':input').each(function () {
 				var $this = $(this),id_item = $this.attr('name');
 				console.log(id_item + "  --" + localStorage.id_item_foto);
@@ -184,10 +292,11 @@ function GuardarItemsExe(tx) {
 						tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_asignacion,id_item,respuesta,id_envio) values ("'+id_asignacion+'","'+id_item+'","'+cant_val+'","'+id_unico+'")');
 					}else				//si es Nuevo registro no asignado
 					{
+						console.log('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
 						tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
 					}
 	           }
-		 });			 
+		 });	*/			 
 		 
 		 var num_foto = 0;
 		 $("img").each(function() {
