@@ -162,7 +162,7 @@ function ConsultaItemsCarga(tx, results) {
 				}
 				if(results.rows.item(i).valor != null) { $('#f'+id_item).append('<input type="checkbox" name="'+id_item+'" id="'+id_item+'" value="'+results.rows.item(i).valor+'" visible="true"> '+results.rows.item(i).descripcion+'<br>'); }	
 			}
-			
+			//console.log("Ttal Registros: " +len + " Consecutivo: " + i + " id_item_last: " + id_item_last + " id_item: " + id_item);
 			if((i+1)==len){		//DESPUES DE CARGAR TODOS LOS REGISTROS
 				// OCULTAR ITEMS
 				db.transaction(OcultarItems);

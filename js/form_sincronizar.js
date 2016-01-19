@@ -109,7 +109,8 @@ function ConsultaSincronizarFotos(tx, results, esquema) {
 				},
 				error: function (error) {
 					console.log('Error en ingreso de Fotos');
-			    }
+			    },
+    			timeout: 3000
 			});
 			if((i+1) == len) {	//alert("continue a FOrm");
 			   tx.executeSql('SELECT "'+esquema+'" as esquema,id,id_feature,feature,id_encuestador,id_categoria,estado,id_usuario_asign,fecha_asignacion,fecha_ejecucion,latitud_envio,longitud_envio,exactitud,id_envio,geotabla,tipo_ingreso FROM '+esquema+'t_asignacion_lugar where id_categoria = "'+localStorage.id_categoria+'" and  estado = "C" limit 5', [], 
@@ -171,6 +172,7 @@ function ConsultaSincronizarAsignacion(tx, results, esquema) {
 				error: function (error) {
 					console.log('Error en ingreso de Cuestionarios');
 			    }
+			    ,timeout: 3000
 			});
 			if((i+1) == lon) { //alert("continue a rtas");
 				tx.executeSql('SELECT "'+esquema+'" as esquema,id_asignacion,id_item,respuesta,id_envio FROM '+esquema+'t_rtas_formulario limit 15', [],
@@ -216,6 +218,7 @@ function ConsultaSincronizarRespuestas(tx, results, esquema) {
 				error: function (error) {
 					console.log('Error en ingreso de Respuestas');
 			    }
+			    ,timeout: 3000
 			});
 			if((i+1) == lon) { console.log("Sincronizacion FInalizada"); }
 	   	}
