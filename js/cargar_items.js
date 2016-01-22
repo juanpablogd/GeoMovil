@@ -49,12 +49,49 @@ function SeleccionItemsOcultarResult(tx, results) {
 			$("#f"+id_item+"").removeClass('required');
 			$("#l"+id_item+"").hide();
 			$("#"+id_item+"").hide();
-			$("#f"+id_item+"").hide();			
+			$("#f"+id_item+"").hide();
+			if($("#"+id_item).prop("tagName") == "SELECT"){
+				console.log("Select");
+				//SI ES SELECT INICIALIZA EL CONTROL TAN TAS VECES TENGA SALTOS LOGICOS
+				$("#"+id_item+" option[value='']").prop('selected', true);
+				$("#"+id_item).selectmenu('refresh', true);
+				//OCULTA LOS SALTOS LOGICOS JERARQUICAMENTE
+				tx.executeSql('select iadd.id_rta,iadd.id_item,item.id_item id_item_origen from '+esquema+'p_items_adicional iadd inner join '+esquema+'p_rtas_seleccion rtas on iadd.id_rta = rtas.id inner join '+esquema+'p_items_formulario item on item.id_item = rtas.id_item where id_categoria = "'+localStorage.id_categoria+'" and item.id_item = "'+id_item+'" order by iadd.id_item desc', [], 
+				       (function(esquema){
+				           return function(tx,results){
+				               SeleccionOcultarTodosResult(tx,results,esquema);
+				           };
+				       })(esquema),errorCB);
+			}
 		}
-			
-
    	}
-   
+}
+
+function SeleccionOcultarTodosResult(tx, results) {
+	var len = results.rows.length;	//alert(len);
+	for (i = 0; i < len; i++){
+		var id_item = results.rows.item(i).id_item;
+		var id_rta = results.rows.item(i).id_rta; console.log(localStorage.id_rta + " Loop: " + id_rta);
+			console.log("Ocultar elemento: "+id_item);
+			$("#"+id_item+"").removeAttr('required');
+			$("#"+id_item+"").attr('visible','false');
+			$("#f"+id_item+"").removeClass('required');
+			$("#l"+id_item+"").hide();
+			$("#"+id_item+"").hide();
+			$("#f"+id_item+"").hide();
+			if($("#"+id_item).prop("tagName") == "SELECT"){
+				console.log("Select");
+				//SI ES SELECT INICIALIZA EL CONTROL TAN TAS VECES TENGA SALTOS LOGICOS
+				$("#"+id_item+" option[value='']").prop('selected', true);
+				$("#"+id_item).selectmenu('refresh', true);
+				tx.executeSql('select iadd.id_rta,iadd.id_item,item.id_item id_item_origen from '+esquema+'p_items_adicional iadd inner join '+esquema+'p_rtas_seleccion rtas on iadd.id_rta = rtas.id inner join '+esquema+'p_items_formulario item on item.id_item = rtas.id_item where id_categoria = "'+localStorage.id_categoria+'" and item.id_item = "'+id_item+'" order by iadd.id_item desc', [], 
+				       (function(esquema){
+				           return function(tx,results){
+				               SeleccionOcultarTodosResult(tx,results,esquema);
+				           };
+				       })(esquema),errorCB);
+			}
+   	}
 }
 
 function getval(sel) {
