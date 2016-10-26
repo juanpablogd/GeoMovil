@@ -1,5 +1,5 @@
 /** * @author DGJP * @Fecha 2013-08 */
-$(window).load(function () {	db.transaction(BuscaUsuarioLogueado);
+$(window).on('load', function() {	db.transaction(BuscaUsuarioLogueado);
 });
 $(document).ready(function(){
 	$("#submit").click(function() {		$("#equivocado").text('Espere por favor...');		var usr = $("#login").val();		var pas = $("#password").val();		if (usr== ""){			$("#equivocado").text('Digite usuario por favor');			$("#login").focus();			return;		}
