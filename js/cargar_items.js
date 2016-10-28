@@ -13,6 +13,8 @@ var id_asignacion = localStorage.id_asignado;	//SI Asignado = t. Entonces retorn
 var geotabla = localStorage.geotabla;			//SI Asignado = t. Nombre de la tabla Geometrica
 var id_feature = localStorage.id_feature;		//SI Asignado = t. Id de la tabla geometrica
 var i_foto=0;
+var id_seleccion;
+
 localStorage.id_unico ="";
 
 /*VARIABLES LOCALES*/
@@ -106,8 +108,18 @@ function getval(sel) {
 	localStorage.tmp_id_rta = tmp_id_rta;
 	console.log("ORIGEN Id rta: " + localStorage.tmp_id_item + " - " + localStorage.tmp_id_rta);
 	
-	// CARGAR ITEMS DE LA BASE DE DATOS
+	// CARGAR form_guardar DE LA BASE DE DATOS
 	db.transaction(SeleccionItemsOcultar);
+}
+
+function activarOpciones(id) {
+        var listItems = $("#"+id+"-menu li");
+		listItems.each(function(idx, li) {
+		    var l = $(li);
+		    l.removeClass("ui-screen-hidden");
+		});
+		$("input[data-type=search]").val("");
+		console.log("activarOpciones");
 }
     
 /****************************************************************************************************************************************************************/
@@ -137,7 +149,7 @@ function validar_campos(){
 	return valido;
 }
 /****************************************************************************************************************************************************************/
-/**OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO******OCULTAR ITEMS POR DEFECTO*****/ 
+/**OCULTAR form_guardar POR DEFECTO******OCULTAR form_guardar POR DEFECTO******OCULTAR form_guardar POR DEFECTO******OCULTAR form_guardar POR DEFECTO******OCULTAR form_guardar POR DEFECTO******OCULTAR form_guardar POR DEFECTO*****/ 
 function OcultarItems(tx) { console.log('SELECT iadd.id_item FROM '+esquema+'p_items_formulario itemfor inner join '+esquema+'p_items_adicional iadd on itemfor.id_item = iadd.id_item where id_categoria = "'+id_categoria+'" order by iadd.id_item desc');
 	
 	tx.executeSql('SELECT iadd.id_item FROM '+esquema+'p_items_formulario itemfor inner join '+esquema+'p_items_adicional iadd on itemfor.id_item = iadd.id_item where id_categoria = "'+id_categoria+'" order by iadd.id_item desc', [], OcultartemsResult,errorCB);
@@ -154,13 +166,13 @@ function OcultartemsResult(tx, results) {
 		$("#f"+id_item+"").hide();
 		$("#"+id_item+"").hide();
    	}
-   	$("#items").trigger("create");
+   	//$("#form_guardar").trigger("create");	//JP
 
 }
-/***FIN OCULTAR ITEMS*************************************************************************************************************************************************************/
+/***FIN OCULTAR form_guardar*************************************************************************************************************************************************************/
 
 /****************************************************************************************************************************************************************/
-/**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
+/**CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar****CARGAR form_guardar**/ 
 function ConsultaItems(tx) {
 	  console.log('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor,rt.id id_add from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where id_categoria="'+id_categoria+'" order by cast(orden as integer),rt.descripcion');	
 	tx.executeSql('select it.id_item, it.descripcion_item, it.tipo_rta, it.obligatorio,rt.descripcion,rt.valor,rt.id id_add from '+esquema+'p_items_formulario it left join '+esquema+'p_rtas_seleccion rt on it.id_item = rt.id_item where id_categoria="'+id_categoria+'" order by cast(orden as integer),rt.descripcion', [], ConsultaItemsCarga,errorCB);
@@ -172,45 +184,70 @@ function ConsultaItemsCarga(tx, results) {
 		var id_item = results.rows.item(i).id_item;	//console.log(localStorage.id_item_foto); console.log(id_item);
 		if(localStorage.id_item_foto != id_item){ //SI NO ES LA PREGUNTA DE LA FOTO
 			var descripcion_item = results.rows.item(i).descripcion_item;
-			var obligatorio = "";		console.log(results.rows.item(i).obligatorio);
+			var obligatorio = "";		//console.log(results.rows.item(i).obligatorio);
 			if(results.rows.item(i).obligatorio == "S") {obligatorio = "required";}
 			
 			if (rta == "TEXTO" && id_item_last != id_item){
-				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" maxlength="255" '+obligatorio+' visible="true"/></div>');
+				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" maxlength="255" '+obligatorio+' visible="true"/></div>');
 			}else if (rta == "PARRAFO" && id_item_last != id_item) {
-				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */				
+				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */				
 			}else if (rta == "CANTIDAD" && id_item_last != id_item) {
-				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" '+obligatorio+' onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;" visible="true"/></div>');	/* $('#'+id_item).textinput(); */
+				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" '+obligatorio+' onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;" visible="true"/></div>');	/* $('#'+id_item).textinput(); */
 			}else if (rta == "FECHA" && id_item_last != id_item) {
-				$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'"><label for="'+id_item+'" name="l'+id_item+'" id="l'+id_item+'" class="control-label" >'+descripcion_item+'</label><input type="date" tipo="fecha" name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' onkeypress="if (event.keyCode< 47 || event.keyCode > 57) event.returnValue = false;" visible="true"/></div>');
+				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label for="'+id_item+'" name="l'+id_item+'" id="l'+id_item+'" class="control-label" >'+descripcion_item+'</label><input type="date" tipo="fecha" name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' onkeypress="if (event.keyCode< 47 || event.keyCode > 57) event.returnValue = false;" visible="true"/></div>');
 			}else if (rta == "SELECCION") {
 				if(id_item_last != id_item){
-					$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'">'+
-											'<label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'" class="select">'+descripcion_item+'</label>'+
-												'<select name="'+id_item+'" id="'+id_item+'" data-mini="true" '+obligatorio+' onchange="getval(this);" visible="true">'+
+					$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'">'+
+											'<label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label>'+
+												'<select name="'+id_item+'" id="'+id_item+'" data-native-menu="false" class="filterable-select" '+obligatorio+' onchange="getval(this);" visible="true">'+
 													'<option value="">---Seleccione---</option>'+
 												'</select>'+
-										'</div>');	
+										'</div>');
+
+				$(document).on("pagecreate", "#"+id_item+"-dialog", function (e) {
+					console.log("pagecreate");
+				    var form = $("<form><input data-type='search'/></form>"),
+				        page = $(this);
+				    
+				    $(".ui-content", this)
+				        .prepend(form);
+				    
+				    form.enhanceWithin()
+				        .on("keyup", "input", function () {
+				        	console.log("keyup");
+					        var data = $(this).val().toLowerCase();
+					        $("li", page).addClass("ui-screen-hidden")
+					            .filter(function (i, v) {
+					            return $(this).text().toLowerCase().indexOf(data) > -1;
+					        }).removeClass("ui-screen-hidden");
+				    });
+				    $(document).on("pagehide", function () {
+				    	console.log("pagehide");
+				    	activarOpciones(id_seleccion);
+						//$("input", form).val("");
+				    });
+				    
+				});
+
 				}
-				if(results.rows.item(i).valor != null) { $('#'+id_item).append('<option value="'+results.rows.item(i).valor+'@'+results.rows.item(i).id_add+'">'+results.rows.item(i).descripcion+'</option>'); }	
+				if(results.rows.item(i).valor != null) { $('#'+id_item).append('<option value="'+results.rows.item(i).valor+'@'+results.rows.item(i).id_add+'">'+results.rows.item(i).descripcion+'</option>').enhanceWithin(); }	
 			}else if (rta == "LISTA") {
 				if(id_item_last != id_item){
-					$("#items").append('<div data-role="fieldcontain" id="f'+id_item+'" class="form-group '+obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="select control-label"" >'+descripcion_item+'</label></div>');
+					$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'" class="form-group '+obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="select control-label"" >'+descripcion_item+'</label></div>');
 				}
 				if(results.rows.item(i).valor != null) { $('#f'+id_item).append('<input type="checkbox" name="'+id_item+'" id="'+id_item+'" value="'+results.rows.item(i).valor+'" visible="true"> '+results.rows.item(i).descripcion+'<br>'); }	
 			}
 			//console.log("Ttal Registros: " +len + " Consecutivo: " + i + " id_item_last: " + id_item_last + " id_item: " + id_item);
 			if((i+1)==len){		//DESPUES DE CARGAR TODOS LOS REGISTROS
-				// OCULTAR ITEMS
+				// OCULTAR form_guardar
 				db.transaction(OcultarItems);
 			}
-	
-				id_item_last = id_item;		//console.log(id_item);
+					id_item_last = id_item;		//console.log(id_item);
 			}
    	}
    	/*Adiciona al formulario Botón de cancelar y Guardar*/
-   	$("#items").append('<a id="Salir" href="formulario_dialog.html" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="delete">Cancelar</a>');
-   	$("#items").append('<button id="btn_save" data-theme="b" data-mini="false" data-icon="check">Guardar</button>');
+   	$("#form_guardar").append('<a id="Salir" href="formulario_dialog.html" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="delete">Cancelar</a>').enhanceWithin();
+   	$("#form_guardar").append('<button id="btn_save" data-theme="b" data-mini="false" data-icon="check">Guardar</button>').enhanceWithin();
    	
    	/* ADICIONA LA FUNCIÓN PARA VALIDAR LOS CAMPOS*/
    	$("#btn_save").click(function () {
@@ -224,10 +261,16 @@ function ConsultaItemsCarga(tx, results) {
 		}
 	    return false;
    	});
-   	
 	/*Refresca estilo para cada uno de los controles*/
-    $("#items").trigger("create");
+	$("#form_guardar").trigger("create");
+	
+	$(".ui-select").click(function(){	//console.log("Click");
+		id_seleccion = $(this).context.previousSibling.htmlFor;
+		activarOpciones(id_seleccion);
+	});
+
 }
+
 /****************************************************************************************************************************************************************/
 /*********************************************************************************************************************************************************************/
 /**CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITEM FOTO****CARGAR ITITEM FOTOEMS****CARGAR ITEM FOTO**/ 
@@ -246,33 +289,33 @@ function ConsultaItemCarga_foto(tx, results) {
 		if(results.rows.item(i).obligatorio == "S") {obligatorio = "required";}		console.log("campofoto_"+i_foto_tmp);
 
 		if (rta == "TEXTO"){
-			$('#campofoto_'+i_foto_tmp).append('<div data-role="fieldcontain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" data-mini="true" maxlength="255" '+obligatorio+'/></div>');	/* $('#'+id_item).textinput(); */
+			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" data-mini="true" maxlength="255" '+obligatorio+'/></div>').enhanceWithin();	/* $('#'+id_item).textinput(); */
 		}else if (rta == "PARRAFO" ) {
-			$('#campofoto_'+i_foto_tmp).append('<div data-role="fieldcontain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+i_foto_tmp+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */
-//$("#items").append('<div id="f'+id_item+'" class="form-group '+obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="control-label">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */
+			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+i_foto_tmp+'" value="" '+obligatorio+' visible="true"/></textarea></div>').enhanceWithin();	/* $('#'+id_item).textinput(); */
+//$("#form_guardar").append('<div id="f'+id_item+'" class="form-group '+obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="control-label">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */
 		}else if (rta == "CANTIDAD") {
-			$('#campofoto_'+i_foto_tmp).append('<div data-role="fieldcontain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" data-mini="true" required onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;"/></div>');	/* $('#'+id_item).textinput(); */
+			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" data-mini="true" required onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;"/></div>').enhanceWithin();	/* $('#'+id_item).textinput(); */
 		}else if (rta == "FECHA") {
-			$('#campofoto_'+i_foto_tmp).append('<div data-role="fieldcontain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="date" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" '+obligatorio+'/></div>');
+			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="date" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" '+obligatorio+'/></div>').enhanceWithin();
 		}else if (rta == "BOOLEANO") {
-			$('#campofoto_'+i_foto_tmp).append('<div data-role="fieldcontain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><select name="'+id_item+'" id="frow'+i_foto_tmp+'" data-role="slider" data-mini="true"><option value="NO"selected >NO</option><option value="SI" >SI</option></select></div>');
+			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><select name="'+id_item+'" id="frow'+i_foto_tmp+'" data-role="slider" data-mini="true"><option value="NO"selected >NO</option><option value="SI" >SI</option></select></div>').enhanceWithin();
 		}else if (rta == "SELECCION") {
 			if(id_item_last != (id_item+"_"+i_foto_tmp)){
-				$("#campofoto_"+i_foto_tmp).append('<div data-role="fieldcontain"><label for="frow'+i_foto_tmp+'" class="select">'+descripcion_item+'</label><select name="'+id_item+'" id="frow'+i_foto_tmp+'" data-mini="true"></select></div>');	
+				$("#campofoto_"+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'" class="select">'+descripcion_item+'</label><select name="'+id_item+'" id="frow'+i_foto_tmp+'" data-mini="true"></select></div>');	
 			}
 			if(results.rows.item(i).valor != null) { $('#frow'+i_foto_tmp).append('<option value="'+results.rows.item(i).valor+'">'+results.rows.item(i).descripcion+'</option>'); }	
 		}
 	id_item_last = id_item+"_"+i_foto_tmp;		console.log(id_item);
    	}
    	/*Adiciona al formulario Botón de cancelar y Guardar
-   	$("#items").append('<a id="Salir" href="formulario_dialog.html" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="delete">Cancelar</a>');
-   	$("#items").append('<button type="submit" data-theme="b" data-mini="true" data-icon="check">Guardar</button>');		*/
+   	$("#form_guardar").append('<a id="Salir" href="formulario_dialog.html" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="delete">Cancelar</a>').enhanceWithin();
+   	$("#form_guardar").append('<button type="submit" data-theme="b" data-mini="true" data-icon="check">Guardar</button>').enhanceWithin();		*/
 	/*Refresca estilo para cada uno de los controles*/
     $("#campofoto_"+i_foto_tmp).trigger("create");
 }
 /*********************************************************************************************************************************************************************/
 /**************************************************************************************************************************************************************************/
-/**GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS****GUARDAR ITEMS**/
+/**GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar****GUARDAR form_guardar**/
 function GuardarItems(){
 	db.transaction(GuardarItemsExe, errorCB);
 }
@@ -389,7 +432,6 @@ function ConsultaGeneralResp(tx, resultsT) {
 }
 /************************************************************************************************************************/
 $(document).ready(function(){
-
 	if(asignado=="t"){
 		// CARGAR INFORMACION GENERAL SI ES ASIGNADO
 		db.transaction(ConsultaGeneral);
@@ -406,7 +448,7 @@ $(document).ready(function(){
 		$("#Subtitulo").append("<br><label style='color:#d0d683'>Geomertría correctamente cargada</label>");
 	}
 	
-	// CARGAR ITEMS(PREGUNTAS/RESPUESTAS) DE LA BASE DE DATOS
+	// CARGAR ITEMSS (PREGUNTAS/RESPUESTAS) DE LA BASE DE DATOS
 	db.transaction(ConsultaItems);
 	
 	//QUITA LOS ELEMENTOS QUE NO ESTÁN CONFIGURADOS EN EL FORMULARIO	titulo_fotos	
@@ -435,7 +477,7 @@ $(document).ready(function(){
 		
 	});
 	//SINCRONIZACION AUTOMATICA CON EL SERVIDOR DEL FORMULARIO ACTUAL
-	console.log("Sincronizar con el servidor");
+	//console.log("Sincronizar con el servidor");
 	db.transaction(ConsultaSincronizar);
 	setInterval(function(){ db.transaction(ConsultaSincronizar); }, 1000*30);
 	

@@ -249,8 +249,7 @@ function Consulta(tx) {
 	tx.executeSql('SELECT esquema FROM p_verticales', [], ConsultaCarga,errorCB_items);
 }
 function ConsultaCarga(tx, results) {
-	var len = results.rows.length;		
-	$("#resultado").before('Verticales encontradas :'+len);
+	var len = results.rows.length;	
 	for (i = 0; i < len; i++){
 		var esquema = results.rows.item(i).esquema;
 		tx.executeSql('SELECT "'+esquema+'" as esquema,id,url_foto,id_envio FROM '+esquema+'t_fotos limit 50', [], ConsultaFotos,errorCB_Fotos);
@@ -308,6 +307,7 @@ $(document).ready(function(){
 	});
 	
 	$("#btn_si").hide();
+	$("#resultado").before('No hay información pendiente para Cargar!!!');
 	db.transaction(Consulta);
 	
 });
