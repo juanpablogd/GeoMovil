@@ -1,6 +1,7 @@
 /**
- * @author juan.garzon 2013-JUN-20
- * @Mod juan.garzon 2013-JUL-20		
+ * @author SKAPHE 2013-JUN-20
+ * @Mod juan.garzon 2015-JUL-20
+ * @Mod juan.garzon 2016-OCT-31		
  */
 var db = window.openDatabase("bdsigplus", "1.0", "Proyecto Sig Plus", 33554432);
 var datos_pendientes;
@@ -245,7 +246,6 @@ function SalirResp(tx, results, esquema) {
 }
 
 /*----------------LISTA INFORMACIÓN A CARGAR CUANDO INICIA EL APLICATIVO----------------*/
-
 function Consulta(tx) {
 	tx.executeSql('SELECT esquema FROM p_verticales', [], ConsultaCarga,errorCB_items);
 }
@@ -304,12 +304,13 @@ $(document).ready(function(){
 	
 	$("#btn_si").click(function(event) {
 		$.mobile.loading( 'show', { text: 'Cargando Información....', textVisible: true, theme: 'a', html: "" });
-		$("#btn_si").remove();	//$("#btn_no").remove();
+		$("#btn_si").remove();					//$("#").remove();
 		$("#Lpregunta").remove();
 		db.transaction(ConsultaSincronizar);
 	});
 	
 	$("#btn_si").hide();
+
 	db.transaction(Consulta);
 	
 });

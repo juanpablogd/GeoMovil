@@ -4,6 +4,7 @@
  * @Fecha 20130930
  */
 var id_usuario = window.localStorage.id_usr;
+var datos_pendientes=false;
 
 function alerta(titulo,contenido,btn_nombre,link){
 	localStorage.alert_titulo = titulo;
@@ -174,6 +175,42 @@ function descargar_cartografia()
 		});
 }
 
+/*----------------LISTA INFORMACIÓN A CARGAR CUANDO INICIA EL APLICATIVO----------------*/
+function Consulta(tx) {
+	tx.executeSql('SELECT esquema FROM p_verticales', [], ConsultaCarga);
+}
+function ConsultaCarga(tx, results) {
+	var len = results.rows.length;	
+	for (i = 0; i < len; i++){
+		var esquema = results.rows.item(i).esquema;
+		tx.executeSql('SELECT "'+esquema+'" as esquema FROM '+esquema+'t_fotos limit 1', [], ConsultaFotos);
+		tx.executeSql('SELECT "'+esquema+'" as esquema,id,id_feature,feature,id_encuestador,id_categoria,estado,id_usuario_asign,fecha_asignacion,fecha_ejecucion,latitud_envio,longitud_envio,exactitud,id_envio,geotabla,tipo_ingreso FROM '+esquema+'t_asignacion_lugar where estado = "C" limit 1', [], ConsultaAsignacion);
+   };
+
+}
+
+//CONSULTA DE FOTOS PENDIENTES PARA CARGAR
+function ConsultaFotos(tx, results) {
+	var len = results.rows.length;
+	ttal_fotos = len;
+	if(len>0){
+		if(!$('#div_enviar').is(':visible')) {
+			$("#div_descargar").hide();
+			$("#div_enviar").show();
+		}
+	}
+}
+//CONSULTA ASIGNACIÓN
+function ConsultaAsignacion(tx, results) {
+	var len = results.rows.length;
+	ttal_formularios = len;
+	if(len>0){
+		if(!$('#div_enviar').is(':visible')) {
+			$("#div_descargar").hide();
+			$("#div_enviar").show();
+		}
+	}
+}
 
 
 $( document ).ready(function() {
@@ -185,6 +222,9 @@ $( document ).ready(function() {
     $("#btn_no").click(function( event ) {
  		window.location = "principal.html";
 	});
+    $("#btn_enviar").click(function( event ) {
+ 		window.location = "cargar.html";
+	});
 	
     $("#btn_si_carto").click(function( event ) {
     	$("#btn_si_carto").remove();
@@ -194,4 +234,9 @@ $( document ).ready(function() {
     $("#btn_no_carto").click(function( event ) {
  		window.location = "principal.html";
 	});
+	
+	$("#div_descargar").show();
+	$("#div_enviar").hide();
+	
+	db.transaction(Consulta);
  });

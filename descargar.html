@@ -24,13 +24,19 @@
 	    <a href="principal.html" target="_top" data-rel="back" data-icon="arrow-l" class="ui-btn-left">Volver</a>
 	</div><!-- /header -->
 	<div class="colorgraph"></div>
-	<div data-role="content"><br><h2>Descargar Formularios</h2><br>
-		Seguro que deseas descargar la Información?, recuerda que perderas el trabajo realizado desde la ultima descarga.
+	<div data-role="content" id="div_descargar"><br><h2>Descargar Formularios</h2><br>
+		<label>Seguro que deseas descargar la Información?, recuerda que perderas el trabajo realizado desde la ultima descarga.</label>
 		<p>
 		    <a href="#" id="btn_si" data-theme="b" data-role="button" data-inline="true">SI</a>
 		    <a href="#" id="btn_no" data-theme="a" data-role="button" data-inline="true">No</a>
 		</p>
     </div><!-- /content -->
+	<div data-role="content" id="div_enviar"><br><h3>NO ES POSIBLE DESCARGAR INFORMACIÓN</h3><br>
+		<label >Antes de Sincronizar debe enviar los datos de los formularios ya guardados.</label>
+		<p>
+		    <a href="#" id="btn_enviar" data-theme="a" data-role="button" data-inline="true">Enviar</a>
+		</p>
+    </div>
     
 	<div data-role="content"><br><h2>Descargar Cartografía</h2><br>
 		Seguro que deseas descargar la Cartografía?, el proceso puede durar algunos minutos
@@ -46,7 +52,6 @@
     </div><!-- /footer -->
 
 </div>
-
 	<script src="js/bdactualizar_parametros.js"></script>
 	<script src="js/actualizar_parametros.js"></script>
 	<script src="js/geolocation.js"></script>
