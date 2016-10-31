@@ -7,6 +7,7 @@ var datos_pendientes;
 var ttal_fotos;
 var ttal_formularios;
 var ttal_respuestas;
+var msj_vacio = "No hay información pendiente para Cargar!!!";
 
 function alerta(titulo,contenido,btn_nombre,link){
 	localStorage.alert_titulo = titulo;
@@ -278,6 +279,7 @@ function ConsultaAsignacion(tx, results) {
 	if(len>0){
 		$("#resultado").before('<br>Formularios Pendientes envío - '+results.rows.item(0).esquema+': '+ttal_formularios);
 		if(datos_pendientes==false){
+			$("#resultado").html('');
 			$("#btn_si").show();
 			$("#Lpregunta").html("Seguro que deseas cargar la Información?");
 		}
@@ -297,6 +299,7 @@ function ConsultaRespuestas(tx, results) {
 }
 
 $(document).ready(function(){
+	$("#resultado").append(msj_vacio);
 	datos_pendientes=false;
 	
 	$("#btn_si").click(function(event) {
@@ -307,7 +310,6 @@ $(document).ready(function(){
 	});
 	
 	$("#btn_si").hide();
-	$("#resultado").before('No hay información pendiente para Cargar!!!');
 	db.transaction(Consulta);
 	
 });

@@ -96,20 +96,42 @@ function SeleccionOcultarTodosResult(tx, results) {
    	}
 }
 
-function getval(sel) {
-	console.log("Id: "+sel.id);
+function SeleccionItemsFiltrar(tx) {	console.log('select rs.id as id_add,rs.valor,rs.descripcion,id_item_hijo from '+esquema+'p_items_filtro itf inner join '+esquema+'p_rtas_seleccion rs on itf.id_item_hijo = rs.id_item where id_item_padre = "'+localStorage.tmp_id_item+'" and vr_padre = "'+localStorage.tmp_id_item_vr+'" order by rs.descripcion');
+	tx.executeSql('select rs.id as id_add,rs.valor,rs.descripcion,id_item_hijo from '+esquema+'p_items_filtro itf inner join '+esquema+'p_rtas_seleccion rs on itf.id_item_hijo = rs.id_item where id_item_padre = "'+localStorage.tmp_id_item+'" and vr_padre = "'+localStorage.tmp_id_item_vr+'" order by rs.descripcion', [], seleccionItemsFiltrarResult,errorCB);
+}
+function seleccionItemsFiltrarResult(tx, results) {
+	var len = results.rows.length;	console.log(len);
+	var id_select;
+	if(len > 0){
+		id_select = results.rows.item(0).id_item_hijo;
+		$('#'+id_select).find('option').remove().end();		
+		$('#'+id_select).append('<option value="">---Seleccione---</option>');
+	}
+	for (i = 0; i < len; i++){
+		$('#'+id_select).append('<option value="'+results.rows.item(i).valor+'@'+results.rows.item(i).id_add+'">'+results.rows.item(i).descripcion+'</option>').enhanceWithin();
+   	}
+   	$('#'+id_select).selectmenu("refresh");
+}
+
+function getval(sel) {	//console.log(sel);
+	//console.log("Id: "+sel.id);
 	var res = sel.value.split("@");
-	// VALOR FINAL A GUARDAR
+	//VALOR RESPUESTA
+	var tmp_id_item_vr = res[0];
+	// VALOR ID RESPUESTA
 	var tmp_id_rta = res[1];
-	// VALOR FINAL A GUARDAR
+	// VALOR ID ITEM A MOSTRAR
 	var tmp_id_item = res[2];
 	//Variable Global como localStorage
 	localStorage.tmp_id_item = sel.id;
 	localStorage.tmp_id_rta = tmp_id_rta;
-	console.log("ORIGEN Id rta: " + localStorage.tmp_id_item + " - " + localStorage.tmp_id_rta);
+	localStorage.tmp_id_item_vr = tmp_id_item_vr;
+	console.log("ORIGEN  Id item: " + localStorage.tmp_id_item + " - Id rta: " + localStorage.tmp_id_rta + " - Vr: " + localStorage.tmp_id_item_vr);
 	
 	// CARGAR form_guardar DE LA BASE DE DATOS
 	db.transaction(SeleccionItemsOcultar);
+	// CARGAR form_guardar DE LA BASE DE DATOS
+	db.transaction(SeleccionItemsFiltrar);
 }
 
 function activarOpciones(id) {
@@ -133,7 +155,6 @@ function errorCB(err) {
 
 function validar_campos(){
 	var valido = true;
-	
 	//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
 	 $(':input').each(function () {
 			var $this = $(this),required = $this.attr('required');
