@@ -135,7 +135,7 @@ function ConsultaSincronizarAsignacion(tx, results, esquema) {
 			       };
 			   })(esquema),errorCB_Respuestas);
 	}else{
-		for (i = 0; i < lon; i++){
+		for (i = 0; i < lon; i++){	console.log(results.rows.item(i));
 			var parametros = new Object();
 			var cod_envio = results.rows.item(i).id_envio;
 			parametros['esquema'] = results.rows.item(i).esquema;

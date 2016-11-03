@@ -27,3 +27,9 @@
 .ui-selectmenu.ui-dialog .ui-header {
     border-bottom-width: 1px;
 }
+/*  AJUSTA EL CHECKBOX DE ACUERDO AL TAMAÑO DE LA PANTALLA*/
+@media screen and (min-width: 480px) {
+    .ui-checkbox {
+        margin-left: 22% !important;
+    }
+}

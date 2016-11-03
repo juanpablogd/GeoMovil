@@ -153,17 +153,37 @@ function errorCB(err) {
    	}
 }
 
+function revisarCheck(id) {
+	var valido = false;
+    $('input[id="'+id+'"]').each(function() { //console.log($(this).context.checked);
+        if ($(this).context.checked) { //console.log("si!");
+            valido = true;
+        }
+    });
+ 	return valido;
+}
+
 function validar_campos(){
 	var valido = true;
 	//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
 	 $(':input').each(function () {
-			var $this = $(this),required = $this.attr('required');
-			var cant_val = $(this).val();
-			console.log("required: " + required + " Val: " + cant_val);
-			if(required=="required" && cant_val == ""){
-				valido  = false;
-				$(this).focus();
-				return false;
+			var $this = $(this),required = $this.attr('required'),tipo = $this.attr('type');	//console.log($this.attr('type'));
+			var valor = $(this).val(), id = $this.attr('id');
+			console.log("required: " + required + " Val: " + valor);
+			if(required=="required"){
+				if(tipo == "checkbox"){ console.log(revisarCheck(id));
+					if(revisarCheck(id)==false){
+						valido  = false;
+						$(this).focus();
+						return false;
+					}
+				}else{
+					if(valor == ""){
+						valido  = false;
+						$(this).focus();
+						return false;					
+					}					
+				}
 			}
 	 });
 		 
@@ -211,7 +231,7 @@ function ConsultaItemsCarga(tx, results) {
 			if (rta == "TEXTO" && id_item_last != id_item){
 				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" maxlength="255" '+obligatorio+' visible="true"/></div>');
 			}else if (rta == "PARRAFO" && id_item_last != id_item) {
-				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */				
+				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><textarea cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */				
 			}else if (rta == "CANTIDAD" && id_item_last != id_item) {
 				$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label name="l'+id_item+'" id="l'+id_item+'" for="'+id_item+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="'+id_item+'" placeholder="'+descripcion_item+'" value="" data-mini="true" '+obligatorio+' onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;" visible="true"/></div>');	/* $('#'+id_item).textinput(); */
 			}else if (rta == "FECHA" && id_item_last != id_item) {
@@ -252,11 +272,14 @@ function ConsultaItemsCarga(tx, results) {
 
 				}
 				if(results.rows.item(i).valor != null) { $('#'+id_item).append('<option value="'+results.rows.item(i).valor+'@'+results.rows.item(i).id_add+'">'+results.rows.item(i).descripcion+'</option>').enhanceWithin(); }	
-			}else if (rta == "LISTA") {
+			}else if (rta == "LISTA") {		//console.log(id_item_last + " " + id_item);	console.log(results.rows.item(i));
 				if(id_item_last != id_item){
-					$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'" class="form-group '+obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="select control-label"" >'+descripcion_item+'</label></div>');
+					$("#form_guardar").append('<div class="ui-field-contain" id="f'+id_item+'"><label>'+descripcion_item+'</label><br></div>');
 				}
-				if(results.rows.item(i).valor != null) { $('#f'+id_item).append('<input type="checkbox" name="'+id_item+'" id="'+id_item+'" value="'+results.rows.item(i).valor+'" visible="true"> '+results.rows.item(i).descripcion+'<br>'); }	
+				if(results.rows.item(i).valor != null) { $('#f'+id_item).append('<label><input type="checkbox" name="'+id_item+'" id="'+id_item+'" value="'+results.rows.item(i).valor+'" visible="true" '+obligatorio+' data-mini="true">'+results.rows.item(i).descripcion+'</label>'); }
+				//.trigger('create')
+				//$("input[type='checkbox']").checkboxradio().checkboxradio("refresh");
+				console.log("Adiciona CheckBox!");
 			}
 			//console.log("Ttal Registros: " +len + " Consecutivo: " + i + " id_item_last: " + id_item_last + " id_item: " + id_item);
 			if((i+1)==len){		//DESPUES DE CARGAR TODOS LOS REGISTROS
@@ -284,6 +307,7 @@ function ConsultaItemsCarga(tx, results) {
    	});
 	/*Refresca estilo para cada uno de los controles*/
 	$("#form_guardar").trigger("create");
+	console.log("Refresca estilo");
 	
 	$(".ui-select").click(function(){	//console.log("Click");
 		id_seleccion = $(this).context.previousSibling.htmlFor;
@@ -312,8 +336,8 @@ function ConsultaItemCarga_foto(tx, results) {
 		if (rta == "TEXTO"){
 			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="text" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" data-mini="true" maxlength="255" '+obligatorio+'/></div>').enhanceWithin();	/* $('#'+id_item).textinput(); */
 		}else if (rta == "PARRAFO" ) {
-			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+i_foto_tmp+'" value="" '+obligatorio+' visible="true"/></textarea></div>').enhanceWithin();	/* $('#'+id_item).textinput(); */
-//$("#form_guardar").append('<div id="f'+id_item+'" class="form-group '+obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="control-label">'+descripcion_item+'</label><textarea class="form-control" cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */
+			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><textarea cols="40" rows="8"  name="'+id_item+'" id="'+i_foto_tmp+'" value="" '+obligatorio+' visible="true"/></textarea></div>').enhanceWithin();	/* $('#'+id_item).textinput(); */
+//$("#form_guardar").append('<div id="f'+id_item+'" +obligatorio+'"><label name="l'+id_item+'" id="l'+id_item+'" class="control-label">'+descripcion_item+'</label><textarea cols="40" rows="8"  name="'+id_item+'" id="'+id_item+'" value="" '+obligatorio+' visible="true"/></textarea></div>');	/* $('#'+id_item).textinput(); */
 		}else if (rta == "CANTIDAD") {
 			$('#campofoto_'+i_foto_tmp).append('<div class="ui-field-contain"><label for="frow'+i_foto_tmp+'">'+descripcion_item+'</label><input type="number" name="'+id_item+'" id="frow'+i_foto_tmp+'" value="" data-mini="true" required onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;"/></div>').enhanceWithin();	/* $('#'+id_item).textinput(); */
 		}else if (rta == "FECHA") {
