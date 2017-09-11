@@ -24,6 +24,7 @@ function descargar()
 			url:'http://'+localStorage.url_servidor+'/SIG/servicios/actualizar_parametros.php?id_usuario='+id_usuario,
 			dataType: 'json',
 			success: function(data){
+				console.log(data);	//return false;
 				if (data[0].encontrado == "true"){
 						$.mobile.loading( 'show', { text: 'Descargando Información....', textVisible: true, theme: 'a', html: "" });
 						arr_ListaTabla = new Array();
