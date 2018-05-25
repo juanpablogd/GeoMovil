@@ -33,8 +33,6 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        var uuid = device.uuid;
-        $('#cod_dm').html('Imei:' + uuid);
-        
+        console.log("DeviceReady");
     }
 };

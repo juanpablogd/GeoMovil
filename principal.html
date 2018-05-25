@@ -33,8 +33,8 @@
 		<a href="index.html" target="_self" data-shadow="false" data-iconshadow="false" data-icon="arrow-l" data-iconpos="notext" data-rel="back" data-ajax="false">Back</a>
 	</div> /header -->
 	
-	<div data-role="header" style="overflow:hidden;">
-		<h1>Menú</h1>
+	<div data-role="header" style="overflow:hidden;" id="titulo">
+		<h1>Menú Geomóvil</h1>
 	</div><!-- /header -->
 	<div class="colorgraph"></div>
 	<div data-role="content">
@@ -71,23 +71,27 @@
                 <p class="ui-li-aside">Cerrar</p>
             </a></li>
         </ul>
-                
-	
 
-                
     </div><!-- /content -->
     <div class="colorgraph"></div>
     <div data-role="footer" data-theme="none">
-        <h3>Sistema SAGA - GeoMóvil<img src="img/logoUnidosPodemosMas.png" align="right"></h3>
+    	<h3 id="pie">
+    		<img src="img/logoUnidosPodemosMas.png" align="left" style="height: 6vh;">
+    		
+    		<img src="img/sectic.png" align="right" style="height: 6vh;">
+    	</h3>
     </div><!-- /footer -->
-    
-	<h3><div id="cod_dm"> </div></h3>
-
 </div><!-- /page -->
 
 	<!-- End Page Content -->
 	<script type="text/javascript" src="js/index_device_info.js"></script>
 	<script type="text/javascript">app.initialize();</script>
 	<script src="js/geolocation.js"></script>
+	<script type="text/javascript">
+		if (localStorage.id_perfil_form == "147") {
+            $("#pie").append('<img src="img/LOGOGEST.png" align="center" style="height: 6vh;">');
+            $("#titulo").html('<img src="img/LOGOGEST.png" align="left" style="height: 6vh;margin: 4px;"><h1>Menú Geomóvil</h1>');
+        }
+	</script>>
 </body>
 </html>
