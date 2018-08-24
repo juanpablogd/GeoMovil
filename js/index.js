@@ -18,3 +18,5 @@ var app = {
         console.log('deviceready');
     }
 };
+
+app.initialize();

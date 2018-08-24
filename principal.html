@@ -3,8 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Grid Listview - jQuery Mobile Demos</title>
-	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+	<title>Geomovil - Menú </title>
+
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="libs/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="libs/waves/waves.min.css" />
+    <link rel="stylesheet" href="libs/wow/animate.css" />
+    <link rel="stylesheet" href="libs/nativeDroid2/css/nativedroid2.css" />
+    <link rel="stylesheet" href="css/general.css" />
+	<!-- link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
 	<link rel="stylesheet" href="css/listview-grid.css">
 	<style type="text/css">
 		.my-page .ui-listview li .ui-btn .ui-li-aside {
@@ -15,12 +22,20 @@
 		}
 	</style>
 	
-	<link rel="stylesheet"  href="css/crear.css">
+	<link rel="stylesheet"  href="css/crear.css" -->
 	
-	<script src="js/valida.js"></script> 
+	<script src="js/valida.js"></script>
+
+    <script src="libs/jqm/js/jquery.min.js"></script>
+    <script src="libs/jqm/js/jquery-ui.min.js"></script>
+    <script src="libs/jqm/js/jquery.mobile.min.js"></script>
+    <script src="libs/waves/waves.min.js"></script>
+    <script src="libs/wow/wow.min.js"></script>
+    <script src="libs/nativeDroid2/js/nativedroid2.js"></script>
+    <script src="libs/nativeDroid2/js/nd2settings.js"></script>
 	
-	<script src="jqm/js/jquery.js"></script>
-	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script>
+	<!--script src="jqm/js/jquery.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script-->
 	
 	<script type="text/javascript" src="cordova.js"></script>
 
@@ -36,7 +51,7 @@
 	<div data-role="header" style="overflow:hidden;" id="titulo">
 		<h1>Menú Geomóvil</h1>
 	</div><!-- /header -->
-	<div class="colorgraph"></div>
+	<!-- div class="colorgraph"></div -->
 	<div data-role="content">
 	
         <ul data-role="listview" data-inset="true" >
@@ -73,25 +88,43 @@
         </ul>
 
     </div><!-- /content -->
-    <div class="colorgraph"></div>
-    <div data-role="footer" data-theme="none">
+
+    <div data-role="footer" data-position="fixed"><div class="colorgraph"></div>
+        <div class="row center-xs">
+            <div class="col-xs-4">
+                <div class="box" >
+                    <img src="img/logoUnidosPodemosMas.png" align="center">
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="box">
+                    <img src="img/sectic.png" align="center" style="height: 6vh;">
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="box" id="pie">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--div data-role="footer" data-theme="none">
     	<h3 id="pie">
     		<img src="img/logoUnidosPodemosMas.png" align="left" style="height: 6vh;">
     		
     		<img src="img/sectic.png" align="right" style="height: 6vh;">
     	</h3>
-    </div><!-- /footer -->
+    </div --><!-- /footer -->
 </div><!-- /page -->
 
 	<!-- End Page Content -->
 	<script type="text/javascript" src="js/index_device_info.js"></script>
-	<script type="text/javascript">app.initialize();</script>
 	<script src="js/geolocation.js"></script>
 	<script type="text/javascript">
 		if (localStorage.id_perfil_form == "147") {
             $("#pie").append('<img src="img/LOGOGEST.png" align="center" style="height: 6vh;">');
             $("#titulo").html('<img src="img/LOGOGEST.png" align="left" style="height: 6vh;margin: 4px;"><h1>Menú Geomóvil</h1>');
         }
-	</script>>
+	</script>
 </body>
 </html>

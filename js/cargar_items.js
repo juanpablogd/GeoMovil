@@ -36,24 +36,21 @@ function SeleccionItemsOcultarResult(tx, results) {
 	for (i = 0; i < len; i++){
 		var id_item = results.rows.item(i).id_item;
 		var id_rta = results.rows.item(i).id_rta; console.log(localStorage.id_rta + " Loop: " + id_rta);
-		if(localStorage.tmp_id_rta == id_rta){
-			console.log("Mostrar elemento: "+id_item);
+		if(localStorage.tmp_id_rta == id_rta){		console.log("Mostrar elemento: "+id_item);
 			$("#l"+id_item+"").show();
 			$("#"+id_item+"").show();
 			$("#f"+id_item+"").show();
 			$("#"+id_item+"").prop('required',true);
 			$("#"+id_item+"").attr('visible','true');
 			$("#f"+id_item+"").addClass('required');
-		}else{
-			console.log("Ocultar elemento: "+id_item);
+		}else{		//console.log("Ocultar elemento: "+id_item);
 			$("#"+id_item+"").removeAttr('required');
 			$("#"+id_item+"").attr('visible','false');
 			$("#f"+id_item+"").removeClass('required');
 			$("#l"+id_item+"").hide();
 			$("#"+id_item+"").hide();
 			$("#f"+id_item+"").hide();
-			if($("#"+id_item).prop("tagName") == "SELECT"){
-				console.log("Select");
+			if($("#"+id_item).prop("tagName") == "SELECT"){		//console.log("Select");
 				//SI ES SELECT INICIALIZA EL CONTROL TAN TAS VECES TENGA SALTOS LOGICOS
 				$("#"+id_item+" option[value='']").prop('selected', true);
 				$("#"+id_item).selectmenu('refresh', true);
@@ -171,7 +168,7 @@ function validar_campos(){
 			var valor = $(this).val(), id = $this.attr('id');
 			console.log("required: " + required + " Val: " + valor);
 			if(required=="required"){
-				if(tipo == "checkbox"){ console.log(revisarCheck(id));
+				if(tipo == "checkbox"){ //console.log(revisarCheck(id));
 					if(revisarCheck(id)==false){
 						valido  = false;
 						$(this).focus();
@@ -198,8 +195,7 @@ function OcultarItems(tx) { console.log('SELECT iadd.id_item FROM '+esquema+'p_i
 function OcultartemsResult(tx, results) {
 	var len = results.rows.length;	//alert(len);
 	for (i = 0; i < len; i++){
-		var id_item = results.rows.item(i).id_item;
-		console.log("Ocultar: " + id_item);
+		var id_item = results.rows.item(i).id_item;		//console.log("Ocultar: " + id_item);
 		$("#l"+id_item+"").hide();
 		$("#"+id_item+"").removeAttr('required');
 		$("#"+id_item+"").attr('visible','false');
@@ -291,7 +287,7 @@ function ConsultaItemsCarga(tx, results) {
    	}
    	/*Adiciona al formulario Botón de cancelar y Guardar*/
    	$("#form_guardar").append('<a id="Salir" href="formulario_dialog.html" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="delete">Cancelar</a>').enhanceWithin();
-   	$("#form_guardar").append('<button id="btn_save" data-theme="b" data-mini="false" data-icon="check">Guardar</button>').enhanceWithin();
+   	$("#form_guardar").append('<button id="btn_save" data-theme="b" data-mini="false"><i class="zmdi zmdi-save"></i>&nbsp&nbspGuardar</button>').enhanceWithin();
    	
    	/* ADICIONA LA FUNCIÓN PARA VALIDAR LOS CAMPOS*/
    	$("#btn_save").click(function () {
@@ -384,44 +380,27 @@ function GuardarItemsExe(tx) {
 			tx.executeSql('INSERT INTO '+esquema+'t_asignacion_lugar (id_encuestador,id_categoria,estado,id_usuario_asign,fecha_asignacion,fecha_ejecucion,latitud_envio,longitud_envio,exactitud,id_envio,tipo_ingreso,feature) values ("'+id_usr+'","'+id_categoria+'","C","'+id_usr+'","'+fecha_captura+'","'+fecha_captura+'","'+myLatitud+'","'+myLongitud+'","'+myPrecision+'","'+id_unico+'","N","'+localStorage.geometria+'")');
 		}
 	
-			//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
-			 $(':input').each(function () {
-					var $this = $(this),id_item = $this.attr('name');
-					if(id_item!==undefined && id_item!="" && id_item!="id_geometria" && id_item != localStorage.id_item_foto){
-						//LLAMA VALOR
-						var cant_val = $(this).val();
-						//SI ES TIPO SELECT QUITA EL ID DE OCULTAR O MOSTRAR
-						var res = cant_val.split("@");
-						// VALOR FINAL A GUARDAR
-						var cant_val = res[0].trim(); 					console.log (id_item + " : " + cant_val + "Visible: " + $(this).attr('visible') + " Checked: " + $(this).attr('type'));
-						if( ( $(this).attr('type') != 'checkbox' && $(this).attr('visible') == 'true' && cant_val != "") || ($(this).attr('type') == 'checkbox' && $(this).is(':checked')) ){
-							if(asignado=="t"){	//si es asignado
-								tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_asignacion,id_item,respuesta,id_envio) values ("'+id_asignacion+'","'+id_item+'","'+cant_val+'","'+id_unico+'")');
-							}else				//si es Nuevo registro no asignado
-							{
-								tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
-								console.log('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
-							}
-						}
-		           }
-			 });
-
-/*		//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
+		//SELECCIONA LOS ELEMENTOS DEL FORMULARIO
 		 $(':input').each(function () {
 				var $this = $(this),id_item = $this.attr('name');
-				console.log(id_item + "  --" + localStorage.id_item_foto);
 				if(id_item!==undefined && id_item!="" && id_item!="id_geometria" && id_item != localStorage.id_item_foto){
-					var cant_val = $(this).val(); 					//alert (id_item); alert(cant_val);
-					if(asignado=="t"){	//si es asignado
-						//alert('INSERT INTO '+esquema+'t_rtas_formulario (id_asignacion,id_item,respuesta,id_envio) values ("'+id_asignacion+'","'+id_item+'","'+cant_val+'","'+id_unico+'")');
-						tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_asignacion,id_item,respuesta,id_envio) values ("'+id_asignacion+'","'+id_item+'","'+cant_val+'","'+id_unico+'")');
-					}else				//si es Nuevo registro no asignado
-					{
-						console.log('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
-						tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
+					//LLAMA VALOR
+					var cant_val = $(this).val();
+					//SI ES TIPO SELECT QUITA EL ID DE OCULTAR O MOSTRAR
+					var res = cant_val.split("@");
+					// VALOR FINAL A GUARDAR
+					var cant_val = res[0].trim(); 					console.log (id_item + " : " + cant_val + "Visible: " + $(this).attr('visible') + " Checked: " + $(this).attr('type'));
+					if( ( $(this).attr('type') != 'checkbox' && $(this).attr('visible') == 'true' && cant_val != "") || ($(this).attr('type') == 'checkbox' && $(this).is(':checked')) ){
+						if(asignado=="t"){	//si es asignado
+							tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_asignacion,id_item,respuesta,id_envio) values ("'+id_asignacion+'","'+id_item+'","'+cant_val+'","'+id_unico+'")');
+						}else				//si es Nuevo registro no asignado
+						{
+							tx.executeSql('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
+							console.log('INSERT INTO '+esquema+'t_rtas_formulario (id_item,respuesta,id_envio) values ("'+id_item+'","'+cant_val+'","'+id_unico+'")');
+						}
 					}
 	           }
-		 });	*/			 
+		 });
 		 
 		 var num_foto = 0;
 		 $("img").each(function() {
@@ -438,12 +417,14 @@ function GuardarItemsExe(tx) {
 	
 		localStorage.feature="";
 		localStorage.geometria="";
-		if(asignado=="t"){	//si es asignado
-			alerta("GeoMovil","Información almacenada exitosamente","Ok","mapa/mobile-jq.html");
-		}else{
-			alerta("GeoMovil","Información almacenada exitosamente","Ok","categorias.html");
-		}
-		
+		console.log("Almacenamiento Exitoso");
+	    setTimeout(function(){ 
+			if(asignado=="t"){	//si es asignado
+				alerta("GeoMovil","Información almacenada exitosamente","Ok","mapa/mobile-jq.html");
+			}else{
+				alerta("GeoMovil","Información almacenada exitosamente","Ok","categorias.html");
+			}
+	    }, 94);
 	}
 }
 /**************************************************************************************************************************************************************************/

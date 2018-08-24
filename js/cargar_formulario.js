@@ -1,5 +1,6 @@
 /**
  * @author SKAPHE 20130902
+ * @author SKAPHE 20180727
  */
 var db = window.openDatabase("bdsigplus", "1.0", "Proyecto Sig Plus", 33554432);
 var id;
@@ -17,20 +18,18 @@ function alerta(titulo,contenido,btn_nombre,link){
 }
 
 //CONTROL DE ERRORES
-function errorCB(err) {
+function errorCB(err) {	console.log(err.code);
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != undefined && err.message != undefined){
-		if(err.code==5){
-			alerta("GeoMovil","Debe cargar los datos correctamente en la Vertical de Negocio","Ok","#");
-		}else{
-			alerta("GeoMovil","Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,"Ok","#");
-		}
+		alerta("GeoMovil","Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,"Ok","principal.html");
+	}else{
+		alerta("GeoMovil","Debe descargar los formularios disponibles","Ok","descargar.html");		
 	}
 }
 
 //CONSULTA LAS VERTICALES EN EL MOVIL
-function ConsultaItems(tx) {	
-	tx.executeSql('select vertical,esquema from p_verticales order by vertical', [], ConsultaItemsCarga);
+function ConsultaItems(tx) {	console.log('select vertical,esquema from p_verticales order by vertical');
+	tx.executeSql('select vertical,esquema from p_verticales order by vertical', [], ConsultaItemsCarga, errorCB);
 }
 // RESPUESTA DE LA CONSULTA LAS VERTICALES EN EL MOVIL
 function ConsultaItemsCarga(tx, results) {
@@ -39,7 +38,6 @@ function ConsultaItemsCarga(tx, results) {
 	for (i = 0; i < len; i++){
 		  console.log('select distinct id,categoria,"'+results.rows.item(i).esquema+'" as esquema,"'+results.rows.item(i).vertical+'" as vertical,foto_calidad,foto_tamano,id_item_foto,geolocaliza_obligatorio,foto_obligatorio,video_obligatorio,geometria_obligatorio from '+results.rows.item(i).esquema+'p_categorias order by categoria');
 		tx.executeSql('select distinct id,categoria,"'+results.rows.item(i).esquema+'" as esquema,"'+results.rows.item(i).vertical+'" as vertical,foto_calidad,foto_tamano,id_item_foto,geolocaliza_obligatorio,foto_obligatorio,video_obligatorio,geometria_obligatorio from '+results.rows.item(i).esquema+'p_categorias order by categoria', [], ConsultaItemsCargaAsignResp,errorCB);
-		
    	}
 }
 
@@ -56,7 +54,7 @@ var lon = resultsV.rows.length;								console.log("Total de Formularios: "+lon)
 		var video_obligatorio = resultsV.rows.item(i).video_obligatorio;
 		var geometria_obligatorio = resultsV.rows.item(i).geometria_obligatorio;
 		var strID = id_categoria+'@'+resultsV.rows.item(i).esquema+'@'+foto_calidad+'@'+foto_tamano+'@'+id_item_foto+'@'+geolocaliza_obligatorio+'@'+foto_obligatorio+'@'+video_obligatorio+'@'+geometria_obligatorio;
-		$("#items").append('<li><a href="#" id ="'+strID+'">'+resultsV.rows.item(i).vertical+'-'+categoria+'</a></li>');
+		$("#items").append('<li><a href="#" id ="'+strID+'"><span class="nd2-subhead">'+resultsV.rows.item(i).vertical+'</span><i class="zmdi zmdi-format-playlist-add"></i>&nbsp'+categoria+'</a></li>');
 		//alert(NoVerticales);
 		if(NoVerticales==1 && lon==1) CargaFormulario(strID);
    	}

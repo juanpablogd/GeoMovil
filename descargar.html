@@ -4,16 +4,31 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Descargar Ordenes de Trabajo</title>
-	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
-	<link rel="stylesheet"  href="css/crear.css">
-	<script src="js/valida.js"></script>
-	
+	<!-- link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet"  href="css/crear.css" -->
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="libs/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="libs/waves/waves.min.css" />
+    <link rel="stylesheet" href="libs/wow/animate.css" />
+    <link rel="stylesheet" href="libs/nativeDroid2/css/nativedroid2.css" />
+    <link rel="stylesheet" href="css/general.css" />
+
+	<!--script src="js/valida.js"></script>
 	<script src="jqm/js/jquery.js"></script>
-	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script -->
+
+	<script src="js/valida.js"></script>
+
+    <script src="libs/jqm/js/jquery.min.js"></script>
+    <script src="libs/jqm/js/jquery-ui.min.js"></script>
+    <script src="libs/jqm/js/jquery.mobile.min.js"></script>
+    <script src="libs/waves/waves.min.js"></script>
+    <script src="libs/wow/wow.min.js"></script>
+    <script src="libs/nativeDroid2/js/nativedroid2.js"></script>
+    <script src="libs/nativeDroid2/js/nd2settings.js"></script>
 
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
-	<script type="text/javascript">app.initialize();</script>
 	
 </head>
 <body >
@@ -21,11 +36,11 @@
 	
 	<div data-role="header" style="overflow:hidden;">
 		<h1>Descargar Información</h1>
-	    <a href="principal.html" target="_top" data-rel="back" data-icon="arrow-l" class="ui-btn-left">Volver</a>
+	    <a href="principal.html" target="_top" data-rel="back" class="ui-btn-left"><i class='zmdi zmdi-tag-more'></i></a>
 	</div><!-- /header -->
 	<div class="colorgraph"></div>
-	<div data-role="content" id="div_descargar"><br><h2>Descargar Formularios</h2><br>
-		<label>Seguro que deseas descargar la Información?, recuerda que perderas el trabajo realizado desde la ultima descarga.</label>
+	<div data-role="content" id="div_descargar"><br><h3>Descargar Formularios</h3><br>
+		Seguro que deseas descargar la Información?, recuerda que perderas el trabajo realizado desde la ultima descarga.
 		<p>
 		    <a href="#" id="btn_si" data-theme="b" data-role="button" data-inline="true">SI</a>
 		    <a href="#" id="btn_no" data-theme="a" data-role="button" data-inline="true">No</a>
@@ -38,8 +53,8 @@
 		</p>
     </div>
     
-	<div data-role="content"><br><h2>Descargar Cartografía</h2><br>
-		Seguro que deseas descargar la Cartografía?, el proceso puede durar algunos minutos
+	<div data-role="content"><br><h4>Descargar Cartografía</h4><br>
+		<label>Seguro que deseas descargar la Cartografía?, el proceso puede durar algunos minutos</label>
 		<p>
 		    <a href="#" id="btn_si_carto" data-theme="b" data-role="button" data-inline="true">SI</a>
 		    <a href="#" id="btn_no_carto" data-theme="a" data-role="button" data-inline="true">No</a>

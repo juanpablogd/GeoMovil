@@ -7,35 +7,46 @@
 	<title>Inicio GeoMóvil!</title>
 
 	<!-- CSS	-->
-	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<link rel="stylesheet" href="libs/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="libs/waves/waves.min.css" />
+	<link rel="stylesheet" href="libs/wow/animate.css" />
+	<link rel="stylesheet" href="libs/nativeDroid2/css/nativedroid2.css" />
+	<link rel="stylesheet" href="css/general.css" />
 	<style type="text/css">
-		body, input, select, textarea, button, .ui-btn {
+/*		body, input, select, textarea, button, .ui-btn {
 		    line-height: 0.8 !important; 
-		}
+		} */
 	</style>
         
-	<link rel="stylesheet"  href="css/crear.css">
+	<!--link rel="stylesheet"  href="css/crear.css"-->
 
 	<!-- JAVASCRIPT		-->
-	<script src="jqm/js/jquery.js"></script>
+	<!-- script src="jqm/js/jquery.js"></script>
 	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script -->
+
+		<script src="libs/jqm/js/jquery.min.js"></script>
+		<script src="libs/jqm/js/jquery-ui.min.js"></script>
+		<script src="libs/jqm/js/jquery.mobile.min.js"></script>
+		<script src="libs/waves/waves.min.js"></script>
+		<script src="libs/wow/wow.min.js"></script>
+		<script src="libs/nativeDroid2/js/nativedroid2.js"></script>
+		<script src="libs/nativeDroid2/js/nd2settings.js"></script>
+
 		
-	<script type="text/javascript" src="js/conexion_servidor.js"></script>
-	
-	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">app.initialize();</script>
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
     	 
 </head>
 	<!-- Main HTML -->
 <body>
 	<!-- Begin Page Content -->
-<div id="container" data-role="page" data-theme="a">
+<div id="container" data-role="page" >
 	
 	<header>
 		<p align="center"><img src="img/logob.png" width="200px" align="center"></p>
-		<h2 align="center" class="label_titulo"><br><br><strong>Sistema SAGA - GeoMóvil</strong> </h2><br>
+		<h2 align="center"><br><br>Sistema SAGA - GeoMóvil </h2><br>
 		
 		<h3><div id ="equivocado" align="center" class="notificacion"></div></h3>
 	</header>
@@ -44,13 +55,15 @@
 	
 	<div id="lower">
 		<!-- <input type="checkbox" id ="conectado"><label class="check" for="checkbox">Permanecer conectado</label> -->
-		<input type="submit" id="submit" value="Ingresar">
+		<!-- input type="submit" id="submit" value="Ingresar" -->
+		<button type="submit" id="submit" class="ui-btn"><i class="zmdi zmdi-mail-send"></i> Ingresar</button>
 	</div><br>
 	<div class="colorgraph"></div>
 	<p align="center"><img src="img/logoUnidosPodemosMas.png" align="left"><img src="img/sectic.png" align="right" style="max-height: 44px;"></p>
 	
 </div>
 	<!-- End Page Content	--> 
+	<script type="text/javascript" src="js/conexion_servidor.js"></script>
 	<script type="text/javascript" src="js/bdLocal.js"></script>
 	<script type="text/javascript" src="js/logueo.js"></script>
 

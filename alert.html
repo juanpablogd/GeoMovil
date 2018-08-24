@@ -4,20 +4,34 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Cancelar Ingreso</title>
-	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
-	<script src="jqm/js/jquery.js"></script>
-	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script>
+	<!-- link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css" -->
+
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="libs/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="libs/waves/waves.min.css" />
+    <link rel="stylesheet" href="libs/wow/animate.css" />
+    <link rel="stylesheet" href="libs/nativeDroid2/css/nativedroid2.css" />
+    <link rel="stylesheet" href="css/general.css" />
+
+    <script src="libs/jqm/js/jquery.min.js"></script>
+    <script src="libs/jqm/js/jquery-ui.min.js"></script>
+    <script src="libs/jqm/js/jquery.mobile.min.js"></script>
+    <script src="libs/waves/waves.min.js"></script>
+    <script src="libs/wow/wow.min.js"></script>
+    <script src="libs/nativeDroid2/js/nativedroid2.js"></script>
+    <script src="libs/nativeDroid2/js/nd2settings.js"></script>
+
+	<!-- script src="jqm/js/jquery.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script -->
 
 </head>
 <body>
 
 
 <div data-role="dialog" data-close-btn="none" data-transition="slidedown">
-
 		<div data-role="header" data-theme="1">
-			<h1><div id="titulo"></div></h1>
+			<h1 class='nd-title' id="titulo">Delete from library?</h1>
 		</div>
-
 		<div data-role="content">
 			<div id="contenido"></div>
 			<div id="boton"></div>
@@ -32,7 +46,7 @@ var alert_href=localStorage.alert_href;
 
 $('#titulo').html(alert_titulo);
 $('#contenido').html(alert_contenido);
-$("#boton").append('<a href="'+alert_href+'" target="_top" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip" data-icon="check">'+alert_btn_nombre+'</a>');
+$("#boton").append('<br><a href="'+alert_href+'" target="_top" data-rel="dialog" data-mini="true" data-role="button" data-transition="flip"><i class="zmdi zmdi-check"></i>&nbsp&nbsp'+alert_btn_nombre+'</a>');
 $("#boton").trigger("create");
 </script>
 </body>

@@ -36,3 +36,4 @@ var app = {
         console.log("DeviceReady");
     }
 };
+app.initialize();

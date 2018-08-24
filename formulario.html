@@ -4,14 +4,31 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Descargar Ordenes de Trabajo</title>
-	<link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
-	<link rel="stylesheet"  href="css/crear.css">
-	<script src="jqm/js/jquery.js"></script>
-	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script>
+	<!--link rel="stylesheet"  href="jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet"  href="css/crear.css" -->
+
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="libs/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="libs/waves/waves.min.css" />
+    <link rel="stylesheet" href="libs/wow/animate.css" />
+    <link rel="stylesheet" href="libs/nativeDroid2/css/nativedroid2.css" />
+    <link rel="stylesheet" href="css/general.css" />
+
+	<!--script src="jqm/js/jquery.js"></script>
+	<script src="jqm/js/jquery.mobile-1.4.5.min.js"></script -->
+
+	<script src="js/valida.js"></script>
+
+    <script src="libs/jqm/js/jquery.min.js"></script>
+    <script src="libs/jqm/js/jquery-ui.min.js"></script>
+    <script src="libs/jqm/js/jquery.mobile.min.js"></script>
+    <script src="libs/waves/waves.min.js"></script>
+    <script src="libs/wow/wow.min.js"></script>
+    <script src="libs/nativeDroid2/js/nativedroid2.js"></script>
+    <script src="libs/nativeDroid2/js/nd2settings.js"></script>
 	
-	<!--script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
-	<script type="text/javascript">app.initialize();</script -->
 	 
 </head>
 <body>
@@ -20,10 +37,9 @@
 	
 	<div data-role="header" style="overflow:hidden;">
 		<h1>Formulario</h1>
-	    <a href="mapa/mobile-jq.html" target="_top" data-rel="back" data-icon="arrow-l" class="ui-btn-left">Volver</a>
-		<a href="principal.html" target="_top" data-icon="home" class="ui-btn-right">Menú</a>
+	    <a href="mapa/mobile-jq.html" target="_top" data-rel="back" class="ui-btn-left"><i class='zmdi zmdi-tag-more'></i></a>
+		<a href="principal.html" target="_top" class="ui-btn-right"><i class='zmdi zmdi-home'></i></a>
 	</div><!-- /header -->
-	<div class="colorgraph"></div>
 	
 	
 	<div align="center" id="Subtitulo"></div>
@@ -46,13 +62,13 @@
 			<div class="result-block"> </div>
 			<button type="button" data-icon="plus" data-theme="a" data-iconpos="right" data-mini="true" data-inline="false" id="add_foto" class="ui-btn-hidden" data-disabled="false" onclick="take_pic();">Adicionar Foto</button>
 			<p id="lista_fotos"></p>
-		</div>
-		<div class="result-block"> <span id="cur_position"></span></div><br>
-		<div class="result-block"> <span id="search_cur_position"></span></div><br>		
+		</div>	<div class="colorgraph"></div>
+		<div class="result-block"> <span id="cur_position" class="nd2-subhead"></span></div><br>
+		<div class="result-block"> <span id="search_cur_position" class="nd2-subhead"></span></div><br>		
 <!--	<button onclick='JavaScript:console.log("Validación campos: " + validar_campos())'>Click Me!</button>	-->
 		
 	<!-- CAMARA FIN-->
-	<div class="colorgraph"></div>	
+	
     <div data-role="footer" data-theme="none">
         <h3>Sistema SAGA - GeoMóvil</h3>
     </div>

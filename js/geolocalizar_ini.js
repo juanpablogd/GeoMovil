@@ -8,7 +8,7 @@ var success = function(pos) {
 	 myLatitud = pos.coords.latitude;
 	 myLongitud = pos.coords.longitude;
 	 myPrecision = pos.coords.accuracy;		 	//text = "<div>Latitude: " + myLatitud + "<br/>" + "Longitude: " + myLongitud + "<br/>" + "Accuracy: " + myPrecision + " m<br/>" + "</div>";
-	 text = "<div>Latitud: " + myLatitud + "<br/>" + "Longitud: " + myLongitud + "<br/>" + "Precisi&oacute;n: " + myPrecision + " m <br/>Fecha: "+ new Date(pos.timestamp)+" <br/>" + "</div>";
+	 text = "<i class='zmdi zmdi-my-location'></i>&nbsp " + myLongitud + "   &nbsp" + "&nbsp  " + myLatitud + "<br/>" + "Precisi&oacute;n: " + myPrecision + " m <br/>Fecha: "+ new Date(pos.timestamp)+" " + " ";
 	 document.getElementById('cur_position').innerHTML = text;
 	 document.getElementById('search_cur_position').innerHTML = "Actualizado!";
 };
